@@ -43,13 +43,13 @@ function Header({ setSidebarOpen, sidebarIsStatic, sidebarOpen }) {
             to={`../`}
           >
             <img 
-              src="/youtube-logo-youtube-logo-transparent-youtube-icon-transparent-free-free-png.webp" 
-              width={30}
-              alt="YouTube Clone"
+              src="/StreamVault1.png" 
+              width={40}
+              alt="Stream Vault"
               className="rounded-lg"
             />
             <span className="font-bold text-xl hidden sm:block">
-              YouTube<sup className="text-xs text-white">Clone</sup>
+              Stream<sup className="text-xs text-white">Vault</sup>
             </span> 
           </Link>
         </div>

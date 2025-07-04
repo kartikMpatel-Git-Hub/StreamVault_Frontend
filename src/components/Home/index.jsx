@@ -159,6 +159,7 @@ const Index = () => {
 
   useEffect(() => {
     if (!isOnline) return;
+    document.title = "Stream Vault"
     fetchVideos();
     fetchPlaylists();
   }, []);

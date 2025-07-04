@@ -429,7 +429,7 @@ function YouTubeWatch() {
     setComments([])
     setVideo(null)
     setFethcingComments(true)
-    document.title = "Youtube Clone";
+    document.title = "Stream Vault";
     setTimeout(() => {
       fetchVideoData(videoId);
     }, 300)
@@ -443,7 +443,7 @@ function YouTubeWatch() {
   }, [setVideo, setChannel, videoId]);
 
   useEffect(() => {
-    document.title = video?.title + " • " + video?.channel || "Youtube Clone";
+    document.title = video?.title + " • " + video?.channel || "Stream Vault";
   }, [video]);
 
 

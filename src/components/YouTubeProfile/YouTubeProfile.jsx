@@ -24,7 +24,7 @@ function YouTubeProfile() {
   useEffect(() => {
     document.title = userName;
     // if (window.innerWidth <= 720) setSidebarOpen(false);
-    document.title = "Youtube Clone";
+    document.title = "Stream Vault";
     fetchUserProfile();
     fetchUserVideos();
     fetchPlaylists();
