@@ -85,24 +85,32 @@ function Header({ setSidebarOpen, sidebarIsStatic, sidebarOpen }) {
 
         {/* Right Section */}
         <div className="flex items-center gap-2">
-          <Link 
-            to={"../video/uploadVideo"} 
-            className="flex items-center gap-2 px-3 py-2 bg-neutral-800 rounded-full hover:bg-neutral-700 transition-colors duration-200"
-          >
-            <Plus className="w-5 h-5" />
-            <span className="hidden sm:block font-medium">Create</span>
-          </Link>
+          {currentUser &&
+            <Link 
+              to={"../video/uploadVideo"} 
+              className="flex items-center gap-2 px-3 py-2 bg-neutral-800 rounded-full hover:bg-neutral-700 transition-colors duration-200"
+            >
+              <Plus className="w-5 h-5" />
+              <span className="hidden sm:block font-medium">Create</span>
+            </Link>
+          }
           <Link
             to={currentUser ? `../getChannelProfile/${currentUser.userName}` : "../login"}
             className="ml-2"
           >
-            <div className="hover:opacity-80 transition-opacity">
-              <img
-                src={currentUser ? currentUser.avatar : "/unknownUser.png"}
-                className="h-8 w-8 rounded-full object-cover border-2 border-neutral-700"
-                alt={currentUser ? currentUser.userName : "User"}
-              />
-            </div>
+            {currentUser ?
+              <div className="hover:opacity-80 transition-opacity">
+                <img
+                  src={currentUser ? currentUser.avatar : "/unknownUser.png"}
+                  className="h-8 w-8 rounded-full object-cover border-2 border-neutral-700"
+                  alt={currentUser ? currentUser.userName : "User"}
+                />
+              </div>
+              :
+              <div className="flex items-center gap-2">
+                <div className="hover:opacity-80 transition-opacity bg-neutral-800 rounded-full px-3 py-2 text-white">Login</div>
+              </div>
+            }
           </Link>
         </div>
       </div>

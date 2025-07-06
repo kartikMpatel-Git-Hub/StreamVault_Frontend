@@ -17,6 +17,7 @@ const Index = () => {
   const HOST = import.meta.env.VITE_HOST;
   const navigate = useNavigate();
   const currentUser = getCurrentUser();
+  const [serverStarted, setServerStarted] = useState(false);
   const [videos, setVideos] = useState(null);
   const [isOnline, setIsOnline] = useState(navigator.onLine);
   const [addToPlaylist, setAddToPlaylist] = useState(false);
@@ -119,6 +120,7 @@ const Index = () => {
   };
 
   const fetchVideos = async () => {
+    setServerStarted(false);
     try {
       const response = await fetch(`${HOST}/api/v1/videos/`, {
         method: "GET",
@@ -148,6 +150,7 @@ const Index = () => {
           };
         });
         setVideos(videos);
+        setServerStarted(true);
       } else {
         setVideos([]);
       }
@@ -183,12 +186,12 @@ const Index = () => {
     );
   }
 
-  if (!videos) {
+  if (!serverStarted) {
     return (
-      <div className="min-h-screen w-full bg-neutral-900 flex items-center justify-center">
+      <div className="min-h-100 w-full bg-neutral-900 flex items-center justify-center">
         <div className="text-center">
           <div className="w-16 h-16 border-2 border-white border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
-          <p className="text-white text-lg">Getting Videos</p>
+          <p className="text-white text-lg">Loading Videos...</p>
         </div>
       </div>
     );

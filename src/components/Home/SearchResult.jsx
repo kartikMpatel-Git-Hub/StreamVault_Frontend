@@ -12,7 +12,7 @@ function SearchResult() {
   const [isLoading, setIsLoading] = useState(true);
   const { query } = useParams();
   const currentUser = getCurrentUser()
-
+  const [serverStarted, setServerStarted] = useState(false);
   const fetchVideos = async () => {
     setVideos([]);
     const response = await fetch(
@@ -105,6 +105,7 @@ function SearchResult() {
   };
 
   useEffect(() => {
+    setServerStarted(false);
     setIsLoading(true);
     fetchVideos();
     fetchChannels();
@@ -114,15 +115,30 @@ function SearchResult() {
     setTimeout(() => {
       fetchRecomendedVideo();
     }, 500);
+    setTimeout(() => {
+      setServerStarted(true);
+    }, 1000);
   }, [query,currentUser]);
 
   if (!isOnline) {
     return (
-      <div className="min-h-screen bg-neutral-700 flex items-center justify-center">
+      <div className="min-h-screen bg-neutral-900 flex items-center justify-center">
         <div className="text-center">
           <div className="w-16 h-16 border-2 border-white border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
           <p className="text-white text-lg">
             Check Your Network Connection And Referesh
+          </p>
+        </div>
+      </div>
+    );
+  }
+  if (!serverStarted) {
+    return (
+      <div className="min-h-100 bg-neutral-900 flex items-center justify-center">
+        <div className="text-center">
+          <div className="w-16 h-16 border-2 border-white border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
+          <p className="text-white text-lg">
+            Loading Videos...
           </p>
         </div>
       </div>
