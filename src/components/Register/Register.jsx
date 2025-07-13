@@ -1,6 +1,6 @@
 import React from "react";
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 function Register() {
   const HOST = import.meta.env.VITE_HOST;
@@ -16,7 +16,7 @@ function Register() {
   const [loading,setLoading] = useState(false)
   const [avatarPreview, setAvatarPreview] = useState(null);
   const [coverImagePreview, setCoverImagePreview] = useState(null);
-
+  const navigate = useNavigate();
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({
@@ -114,8 +114,10 @@ function Register() {
       });
 
       const data = await response.json();
-      setLoading(false)
-      console.log(data)
+      if(data.success){
+        navigate("/login")
+        setLoading(false)
+      }
       setToastMsg(data.message);
       setTimeout(() => setToastMsg(""), 3000);
     } catch (err) {

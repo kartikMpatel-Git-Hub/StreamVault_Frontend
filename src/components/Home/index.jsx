@@ -11,7 +11,10 @@ import {
   Plus,
 } from "lucide-react";
 import { getCurrentUser } from "../../context/UserContext.js";
-import {handleAddToPlaylist,handleRemoveFromPlaylist} from "../util/PlaylistOperations.js"
+import {
+  handleAddToPlaylist,
+  handleRemoveFromPlaylist,
+} from "../util/PlaylistOperations.js";
 
 const Index = () => {
   const HOST = import.meta.env.VITE_HOST;
@@ -33,28 +36,49 @@ const Index = () => {
   const [toastMsg, setToastMsg] = useState(null);
   const [alertMsg, setAlertMsg] = useState(false);
 
-  const toggleStatus = (playlist,pointedVideoId) => {
+  const toggleStatus = (playlist, pointedVideoId) => {
     if (playlist.isVideoAvailable) {
-      if(handleRemoveFromPlaylist(playlist,pointedVideoId,setAllPlaylists,HOST)){
+      if (
+        handleRemoveFromPlaylist(
+          playlist,
+          pointedVideoId,
+          setAllPlaylists,
+          HOST
+        )
+      ) {
         setToastMsg({
           message: `video Removed From ${playlist.title}`,
-          undo: () => handleAddToPlaylist(playlist,pointedVideoId,setAllPlaylists,HOST),
+          undo: () =>
+            handleAddToPlaylist(
+              playlist,
+              pointedVideoId,
+              setAllPlaylists,
+              HOST
+            ),
           playlist: playlist.id,
-        })
+        });
       }
     } else {
-      if(handleAddToPlaylist(playlist,pointedVideoId,setAllPlaylists,HOST)){
+      if (
+        handleAddToPlaylist(playlist, pointedVideoId, setAllPlaylists, HOST)
+      ) {
         setToastMsg({
           message: `video Added To ${playlist.title}`,
-          undo: () => handleRemoveFromPlaylist(playlist,pointedVideoId,setAllPlaylists,HOST),
+          undo: () =>
+            handleRemoveFromPlaylist(
+              playlist,
+              pointedVideoId,
+              setAllPlaylists,
+              HOST
+            ),
           playlist: playlist.id,
-        })
+        });
       }
     }
-    handleCancel()
+    handleCancel();
     setTimeout(() => setToastMsg(null), 2000);
-    fetchPlaylists()
-  }
+    fetchPlaylists();
+  };
 
   const fetchPlaylists = async () => {
     try {
@@ -86,12 +110,17 @@ const Index = () => {
       body: JSON.stringify(newPlaylist),
     });
     let playList = await response.json();
-    handleAddToPlaylist({id:playList.data._id,title:  newPlaylist.title},pointedVideoId,setAllPlaylists,HOST)
-    setAllPlaylists(prev => [...prev,playList.data])
+    handleAddToPlaylist(
+      { id: playList.data._id, title: newPlaylist.title },
+      pointedVideoId,
+      setAllPlaylists,
+      HOST
+    );
+    setAllPlaylists((prev) => [...prev, playList.data]);
     setToastMsg({
       message: `video Added In ${newPlaylist.title}`,
       undo: null,
-    })
+    });
     setNewPlaylist({ title: "", description: "", visibility: "private" });
     handleCancel();
   };
@@ -101,7 +130,9 @@ const Index = () => {
       return {
         id: playlist._id,
         title: playlist.title,
-        isVideoAvailable: new Set(playlist.videos.map(video => video._id.toString())).has(videoId.toString()),
+        isVideoAvailable: new Set(
+          playlist.videos.map((video) => video._id.toString())
+        ).has(videoId.toString()),
         public: playlist.visibility,
       };
     });
@@ -114,8 +145,8 @@ const Index = () => {
     setAddToPlaylist(false);
     setShowCreateForm(false);
     setPlaylists([]);
-    setTimeout(() =>{
-      setPointedVideoId(null)
+    setTimeout(() => {
+      setPointedVideoId(null);
     }, 2000);
   };
 
@@ -138,7 +169,10 @@ const Index = () => {
             id: video._id,
             title: video.title,
             channel: video.owner.userName,
-            views: video.views > 1000 ? `${(video.views / 1000).toFixed(1)}k` : video.views,
+            views:
+              video.views > 1000
+                ? `${(video.views / 1000).toFixed(1)}k`
+                : video.views,
             time: timeAgo(video.createdAt),
             thumbnail: video.thumbnail,
             duration:
@@ -162,7 +196,7 @@ const Index = () => {
 
   useEffect(() => {
     if (!isOnline) return;
-    document.title = "Stream Vault"
+    document.title = "Stream Vault";
     fetchVideos();
     fetchPlaylists();
   }, []);
@@ -198,7 +232,10 @@ const Index = () => {
   }
   const VideoCard = ({ video }) => (
     <div className="rounded-2xl overflow-hidden shadow-md hover:shadow-2xl hover:scale-[1.03] transition-all duration-200 cursor-pointer min-w-0 bg-transparent">
-      <Link to={`../video/${video.id}`} className="relative block aspect-[16/9] w-full">
+      <Link
+        to={`../video/${video.id}`}
+        className="relative block aspect-[16/9] w-full"
+      >
         <img
           src={video.thumbnail}
           alt={video.title}
@@ -219,9 +256,13 @@ const Index = () => {
           </Link>
           <div className="flex-1 min-w-0">
             <Link to={`../video/${video.id}`}>
-              <h3 className="text-base font-semibold text-white line-clamp-2">{video.title}</h3>
+              <h3 className="text-base font-semibold text-white line-clamp-2">
+                {video.title}
+              </h3>
               <p className="text-gray-300 text-sm truncate">{video.channel}</p>
-              <p className="text-gray-400 text-xs truncate">{video.views} views • {video.time}</p>
+              <p className="text-gray-400 text-xs truncate">
+                {video.views} views • {video.time}
+              </p>
             </Link>
           </div>
           <div className="relative">
@@ -237,7 +278,9 @@ const Index = () => {
                peer-checked:opacity-100 peer-checked:scale-100 peer-checked:pointer-events-auto"
             >
               <button
-                onClick={() => currentUser ? handlePlaylist(video.id) : setAlertMsg(true)}
+                onClick={() =>
+                  currentUser ? handlePlaylist(video.id) : setAlertMsg(true)
+                }
                 className="px-4 py-2 text-left text-sm text-white hover:bg-neutral-700 transition"
               >
                 Add To Playlist
@@ -272,24 +315,12 @@ const Index = () => {
                     ))}
                   </div>
                 ) : (
-                  <div className="items-center text-white text-2xl sm:text-4xl py-10 sm:px-70">
-                    <div className="bg-neutral-800 w-full max-w-3xl p-6 sm:p-10 rounded-2xl">
-                      <div className="flex justify-center text-center">
-                        <CircleAlert className="" size={50} />
-                      </div>
-                      <div className="flex justify-center mb-6 text-center">
-                        No Video Found!
-                      </div>
-                      {/* bg-neutral-600 */}
-                      {/* <Link
-                        to="../video/uploadVideo"
-                        className="flex items-center justify-center bg-neutral-700 rounded-3xl px-4 py-2 hover:bg-neutral-600 transition-all"
-                      >
-                        <div className="p-2 rounded-full  sm:bg-transparent">
-                          <Plus className="w-5 h-5 sm:w-6 sm:h-6" />
-                        </div>
-                        <div className="hidden sm:block ml-2 text-lg">Create</div>
-                      </Link> */}
+                  <div className="min-h-80 bg-neutral-900 flex items-center justify-center">
+                    <div className="text-center">
+                      <div className="text-8xl mb-4">📺</div>
+                      <h2 className="text-white text-2xl font-semibold mb-2">
+                        No Videos Yet
+                      </h2>
                     </div>
                   </div>
                 )
@@ -314,15 +345,12 @@ const Index = () => {
             </div>
             <div className="flex-row justify-center p-3">
               {playlists.map((playlist) => (
-                <div
-                  className="flex mb-3"
-                  key={playlist.id}
-                >
+                <div className="flex mb-3" key={playlist.id}>
                   <input
                     type="checkbox"
                     className="w-5 justify-start bg-neutral-900"
                     onChange={() => {
-                      toggleStatus(playlist,pointedVideoId)
+                      toggleStatus(playlist, pointedVideoId);
                     }}
                     checked={playlist.isVideoAvailable}
                   />
@@ -371,6 +399,7 @@ const Index = () => {
                     type="text"
                     placeholder="Playlist Description"
                     value={newPlaylist.description}
+                    no
                     onChange={(e) =>
                       setNewPlaylist({
                         ...newPlaylist,
@@ -422,11 +451,23 @@ const Index = () => {
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
           <div className="py-10 sm:py-15 px-20 sm:px-30 bg-black rounded-xl shadow-lg text-white">
             <div className="flex justify-center">
-              <h2 className="flex justify-centertext-xl font-semibold mb-4 text-xl">login Required</h2>
+              <h2 className="flex justify-centertext-xl font-semibold mb-4 text-xl">
+                login Required
+              </h2>
             </div>
             <div className="flex justify-center gap-3">
-              <button onClick={() => setAlertMsg(false)}className="px-4 py-2 bg-neutral-600 active:bg-neutral-800 text-white rounded">Close</button>
-              <button onClick={() => navigate("../login")}className=" px-4 py-2 bg-neutral-600 active:bg-neutral-800 text-white rounded">login</button>
+              <button
+                onClick={() => setAlertMsg(false)}
+                className="px-4 py-2 bg-neutral-600 active:bg-neutral-800 text-white rounded"
+              >
+                Close
+              </button>
+              <button
+                onClick={() => navigate("../login")}
+                className=" px-4 py-2 bg-neutral-600 active:bg-neutral-800 text-white rounded"
+              >
+                login
+              </button>
             </div>
           </div>
         </div>
@@ -437,19 +478,18 @@ const Index = () => {
                 opacity-100 translate-y-0 transition-all duration-300 ease-in-out"
         >
           {toastMsg.message}
-          {
-            toastMsg.undo && 
+          {toastMsg.undo && (
             <button
               className="ml-45 lg:ml-10 text-blue-500 underline-offset-1 hover:text-blue-500"
               onClick={() => {
-                setToastMsg("")
+                setToastMsg("");
                 toastMsg.undo();
                 handleCancel();
               }}
             >
               undo
             </button>
-          }
+          )}
         </div>
       )}
     </>

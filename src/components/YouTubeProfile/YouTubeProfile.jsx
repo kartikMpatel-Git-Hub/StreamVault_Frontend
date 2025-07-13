@@ -366,9 +366,9 @@ function YouTubeProfile() {
                       {userProfile.isSubscribed ? "Subscribed" : "Subscribe"}
                     </button>
                   )}
-                  <button className="px-6 py-2 rounded-full font-medium bg-neutral-700 hover:bg-neutral-600 text-white shadow transition">
+                  {/* <button className="px-6 py-2 rounded-full font-medium bg-neutral-700 hover:bg-neutral-600 text-white shadow transition">
                     Join
-                  </button>
+                  </button> */}
                   {currentUser &&
                   userProfile.userName == currentUser.userName ? (
                     <Link to="../logout">
