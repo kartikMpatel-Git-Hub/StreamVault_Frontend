@@ -75,7 +75,6 @@ function Register() {
         !formData.coverImage
       )
         throw "All Field Is Required !!";
-      console.log()
       if (!formData.userName.trim()) throw "User's userName Required !";
       if (formData.userName.trim().charAt(0) <= '9' && formData.userName.trim().charAt(0) >= '0') throw "userName Not Startwith Number";
       if (!formData.fullName.trim()) throw "User's Full Name Required !";
@@ -84,6 +83,7 @@ function Register() {
       if (!formData.password || formData.password.length < 8) throw "password must required 8 letters";
       if (!formData.avatar) throw "User's Avatar Required !";
       if (!formData.coverImage) throw "User's CoverImage Required !";
+      if (formData.coverImage == formData.avatar) throw "CoverImage and Avatar Can't be Same !";
     } catch (error) {
       setToastMsg(error);
       setTimeout(() => setToastMsg(""), 3000);
