@@ -83,7 +83,8 @@ function Register() {
       if (!formData.password || formData.password.length < 8) throw "password must required 8 letters";
       if (!formData.avatar) throw "User's Avatar Required !";
       if (!formData.coverImage) throw "User's CoverImage Required !";
-      if (formData.coverImage == formData.avatar) throw "CoverImage and Avatar Can't be Same !";
+      if (formData.coverImage.name == formData.avatar.name) throw "CoverImage and Avatar Can't be Same !";
+
     } catch (error) {
       setToastMsg(error);
       setTimeout(() => setToastMsg(""), 3000);

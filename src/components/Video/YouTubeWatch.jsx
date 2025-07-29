@@ -951,18 +951,22 @@ function YouTubeWatch() {
                   {!fethcingComments ? (
                     comments.map((comment) => (
                       <div key={comment.id} className="flex gap-3">
-                        <img
-                          src={comment.avatar}
-                          alt={comment.author}
-                          className="w-10 h-10 rounded-full object-cover"
-                        />
+                        <Link to={`../getChannelProfile/${comment.author}`}>
+                          <img
+                            src={comment.avatar}
+                            alt={comment.author}
+                            className="w-10 h-10 rounded-full object-cover"
+                          />
+                        </Link>
                         <div className="flex-1 break-words">
                           <div className="flex items-center gap-2 mb-1">
-                            <span className="font-medium text-sm">
-                              {!currentUser || comment.author == currentUser.userName
-                                ? "You"
-                                : comment.author}
-                            </span>
+                            <Link to={`../getChannelProfile/${comment.author}`}>
+                              <span className="font-medium text-sm">
+                                {currentUser && comment.author == currentUser.userName
+                                  ? "You"
+                                  : comment.author}
+                              </span>
+                            </Link>
                             <span className="text-xs text-neutral-300">
                               {comment.timeAgo}
                             </span>
